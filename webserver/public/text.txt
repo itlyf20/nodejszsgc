@@ -1,0 +1,18 @@
+1.初始化 npm init -y
+2.安装对应的包： npm i express mongoose cookie-parser blueimp-md5  jsonwebtoken --save
+3.创建目录
+    server 服务端
+        创建stroe.js文件
+        创建mongo.js文件
+    public 客户端
+        创建login.html
+        创建register.html
+        创建index.html
+4.编写注册逻辑
+5.编写登录逻辑
+6.编写主页面逻辑
+7.完毕
+8.看下页面上的数据
+    如果在未登录的情况下直接访问index.html
+    执行添加操作
+    执行删除操作 

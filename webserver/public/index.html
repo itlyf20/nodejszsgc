@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页面</title>
+    <style>
+        #productbody tr{
+            text-align: center;
+        }
+        body{
+            z-index: 2;
+        }
+        #add2{
+            width: 400px;
+            height: 300px;
+            background-color: burlywood;
+            line-height: 40px;
+            text-align: center;
+            position: absolute;
+            margin-left: 35%;
+            z-index: 3;
+        }
+        #add2 button{
+            width: 60%;
+            border: none;
+            background-color: darkblue;
+            color: white;
+            height: 30px;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function getProduct(){
+            axios.get('/getproduct').then(function(res){
+                var students=res.data
+                if(res.data.code===0){
+                    painProducts(students.data.user)
+                }else{
+                    alert(res.data.msg)
+                    location.href="./login.html"
+                }
+            })
+        }
+        function painProducts(products){
+            var productbody=document.getElementById('productbody')
+            for(let product of products){
+                var tr=document.createElement('tr');
+                tr.innerHTML=`
+                    <td>${product.name}</td> 
+                    <td>${product.price}</td>
+                    <td>${product.count}</td>
+                    <td>
+                        <button onclick="del('${product._id}')">删除</button>
+                    </td>
+                `;
+                productbody.appendChild(tr);
+            }
+        }
+        // 新增
+        function addProduct(){
+            var name=document.getElementById('name').value;
+            var price=document.getElementById('price').value;
+            var count=document.getElementById('count').value;
+            axios.post('/addproduct',{
+                name:name,
+                price:price,
+                count:count
+            }).then(function(res){
+                if(res.data.code===0){
+                    location.reload(true)
+                }
+            })
+        }
+        // 删除数据
+        function del(product_id){
+            axios.post("/delproduct",{
+                product_id:product_id
+            }).then(function(res){
+                if(res.data.code===0){
+                    location.reload(true)
+                }
+            })
+        }
+        // 获取数据直接显示
+        window.onload=function(){
+            getProduct();
+        }
+        // 按钮隐藏
+        function add(){
+            document.getElementById('add2').classList.remove('hide');
+        }
+        // 取消显示
+        function quxiao(){
+            document.getElementById('add2').classList.add('hide');
+        }
+    </script>
+</head>
+<body>
+    <table border="1" cellspacing="0" cellpadding="0" width="500" height="120">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="productbody">
+        </tbody>
+    </table>
+    <button onclick="add()">添加</button>
+    <hr/>
+    <div id="add2" class="hide">
+        <h2>操作数据</h2>
+        名称：<input type="text" id="name"><br/>
+        价格：<input type="text" id="price"><br/>
+        数量：<input type="text" id="count"><br/>
+        <button onclick="addProduct()">添加</button>
+        <button onclick="quxiao()">取消</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <style>
+        body{
+            background: blue;
+        }
+        .forms{
+            width: 400px;
+            height: 300px;
+            background: #ffffff;
+            line-height: 60px;
+            text-align: center;
+            margin: 150px auto;
+            font-size: 20px;
+        }
+        .forms input{
+            height: 25px;
+        }
+        .forms button{
+            width: 60%;
+            background-color: darkblue;
+            color: white;
+            height: 35px;
+            border: none;
+        }
+    </style>
+    <!-- 引入axios的包方便ajax请求 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function regist(){
+            // 获取表单中的用户名和密码
+            var username=document.getElementById("username").value;
+            var password=document.getElementById("password").value;
+            // 注册请求
+            axios.post('/register',{
+                username:username,
+                password:password
+            }).then(function(res){
+                // console.log(res.data)
+                if(res.data.code===0){
+                    location.href='./login.html'
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="forms">
+        <h2>账号注册</h2>
+        用户名：<input type="text" id="username"><br>
+        密&nbsp;&nbsp;&nbsp;码：<input type="password" id="password"><br>
+        <button onclick="regist()">注册</button>
+    </div>
+</body>
+</html>
